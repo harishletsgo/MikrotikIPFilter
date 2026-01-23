@@ -38,7 +38,7 @@ def normalize_token(line: str) -> str | None:
 
 
 def main() -> int:
-    seen: set[str] = set()
+    seen: set[ipaddress._BaseNetwork] = set()
     total_lines = 0
     total_valid = 0
 
@@ -49,22 +49,26 @@ def main() -> int:
             token = normalize_token(line)
             if not token:
                 continue
-            if token not in seen:
-                seen.add(token)
+            net = ipaddress.ip_network(token, strict=False)
+            if net not in seen:
+                seen.add(net)
                 total_valid += 1
 
-    def sort_key(s: str):
-        net = ipaddress.ip_network(s, strict=False)
-        return (net.version, int(net.network_address), net.prefixlen)
-
-    entries = sorted(seen, key=sort_key)
+    collapsed = list(ipaddress.collapse_addresses(seen))
+    entries = sorted(
+        collapsed,
+        key=lambda n: (n.version, int(n.network_address), n.prefixlen),
+    )
 
     with open("blocklist.txt", "w", encoding="ascii") as f:
         for entry in entries:
-            f.write(entry)
+            f.write(str(entry))
             f.write("\n")
 
-    print(f"lines={total_lines} entries={len(entries)} new={total_valid}")
+    print(
+        f"lines={total_lines} entries={len(entries)} "
+        f"new={total_valid} collapsed={len(collapsed)}"
+    )
     return 0
 
 
