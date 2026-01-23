@@ -19,7 +19,9 @@
     :import file-name=$fileName
     /file remove $fileName
 
-    :log info "BlockIPs: Import complete"
+    :local v4Count [/ip firewall address-list print count-only where list=$listName]
+    :local v6Count [/ipv6 firewall address-list print count-only where list=$listName]
+    :log info ("BlockIPs: Import complete (v4=" . $v4Count . " v6=" . $v6Count . ")")
 } on-error={
     :log error ("BlockIPs: Failed processing " . $url . " error=" . $error)
 }
