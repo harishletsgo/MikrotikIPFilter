@@ -68,6 +68,16 @@ def main() -> int:
             f.write(str(entry))
             f.write("\n")
 
+    with open("blocklist.rsc", "w", encoding="ascii") as f:
+        for entry in entries:
+            if entry.version == 6:
+                f.write("/ipv6 firewall address-list add ")
+            else:
+                f.write("/ip firewall address-list add ")
+            f.write("list=BlockIPs address=")
+            f.write(str(entry))
+            f.write(' comment="Auto-blocked IPs" timeout=1d\n')
+
     print(
         f"lines={total_lines} entries={len(entries)} "
         f"new={total_valid} "
