@@ -38,7 +38,8 @@ def normalize_token(line: str) -> str | None:
 
 
 def main() -> int:
-    seen: set[ipaddress._BaseNetwork] = set()
+    seen_v4: set[ipaddress._BaseNetwork] = set()
+    seen_v6: set[ipaddress._BaseNetwork] = set()
     total_lines = 0
     total_valid = 0
 
@@ -50,13 +51,15 @@ def main() -> int:
             if not token:
                 continue
             net = ipaddress.ip_network(token, strict=False)
-            if net not in seen:
-                seen.add(net)
+            target = seen_v4 if net.version == 4 else seen_v6
+            if net not in target:
+                target.add(net)
                 total_valid += 1
 
-    collapsed = list(ipaddress.collapse_addresses(seen))
+    collapsed_v4 = list(ipaddress.collapse_addresses(seen_v4))
+    collapsed_v6 = list(ipaddress.collapse_addresses(seen_v6))
     entries = sorted(
-        collapsed,
+        collapsed_v4 + collapsed_v6,
         key=lambda n: (n.version, int(n.network_address), n.prefixlen),
     )
 
@@ -67,7 +70,8 @@ def main() -> int:
 
     print(
         f"lines={total_lines} entries={len(entries)} "
-        f"new={total_valid} collapsed={len(collapsed)}"
+        f"new={total_valid} "
+        f"collapsed_v4={len(collapsed_v4)} collapsed_v6={len(collapsed_v6)}"
     )
     return 0
 
