@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add blocklist.txt blocklist.rsc
+          git add blocklist.rsc
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
@@ -41,6 +41,4 @@ jobs:
           tag_name: blocklist
           name: Blocklist
           make_latest: true
-          files: |
-            blocklist.txt
-            blocklist.rsc
+          files: blocklist.rsc
