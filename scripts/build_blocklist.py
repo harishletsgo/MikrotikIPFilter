@@ -4,6 +4,7 @@ from __future__ import annotations
 import ipaddress
 import sys
 import urllib.request
+import urllib.error
 
 URLS = [
     "https://www.spamhaus.org/drop/drop.txt",
@@ -14,7 +15,17 @@ URLS = [
 
 
 def fetch_text(url: str) -> str:
-    with urllib.request.urlopen(url, timeout=60) as resp:
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/122.0.0.0 Safari/537.36"
+            ),
+        },
+    )
+    with urllib.request.urlopen(req, timeout=60) as resp:
         data = resp.read()
     return data.decode("utf-8", errors="ignore")
 
@@ -44,7 +55,11 @@ def main() -> int:
     total_valid = 0
 
     for url in URLS:
-        text = fetch_text(url)
+        try:
+            text = fetch_text(url)
+        except (urllib.error.URLError, urllib.error.HTTPError) as exc:
+            print(f"warning: fetch failed url={url} error={exc}", file=sys.stderr)
+            continue
         for line in text.splitlines():
             total_lines += 1
             token = normalize_token(line)
