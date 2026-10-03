@@ -504,7 +504,6 @@
 /ip firewall address-list add list=BlockIPs address=85.11.167.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=85.114.120.0/21 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=85.121.4.0/24 comment="Auto-blocked IPs" timeout=1d
-/ip firewall address-list add list=BlockIPs address=85.122.129.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=85.158.149.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=85.203.26.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=85.203.46.0/24 comment="Auto-blocked IPs" timeout=1d
