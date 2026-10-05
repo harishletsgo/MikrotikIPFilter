@@ -652,7 +652,6 @@
 /ip firewall address-list add list=BlockIPs address=95.85.238.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=95.85.245.227/32 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=95.134.130.182/32 comment="Auto-blocked IPs" timeout=1d
-/ip firewall address-list add list=BlockIPs address=95.141.17.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=95.143.192.159/32 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=95.164.131.0/24 comment="Auto-blocked IPs" timeout=1d
 /ip firewall address-list add list=BlockIPs address=95.164.162.0/24 comment="Auto-blocked IPs" timeout=1d
